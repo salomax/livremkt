@@ -1,7 +1,7 @@
 # livremarketplace
 
 Google Cloud App Engine
- Spring Boot
+ Spring Boot (https://spring.io/guides/gs/spring-boot/)
  Spring Security
  Spring Data
  Spring MVC (Restful)
