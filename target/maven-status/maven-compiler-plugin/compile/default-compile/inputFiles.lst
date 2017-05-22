@@ -1,0 +1,11 @@
+/development/livremkt/src/main/java/com/marketplace/controller/ProductController.java
+/development/livremkt/src/main/java/com/marketplace/exception/ApiError.java
+/development/livremkt/src/main/java/com/marketplace/service/ProductService.java
+/development/livremkt/src/main/java/com/marketplace/controller/RestResponseEntityExceptionHandler.java
+/development/livremkt/src/main/java/com/marketplace/repository/ProductRepository.java
+/development/livremkt/src/main/java/com/marketplace/LivreMarketplaceApplication.java
+/development/livremkt/src/main/java/com/marketplace/service/AbstractEntityService.java
+/development/livremkt/src/main/java/com/marketplace/entity/AbstractEntity.java
+/development/livremkt/src/main/java/com/marketplace/entity/Product.java
+/development/livremkt/src/main/java/com/marketplace/exception/EntityNotFoundException.java
+/development/livremkt/src/main/java/com/marketplace/utils/LivreMarketplaceUtils.java

@@ -9,4 +9,6 @@ Google Cloud App Engine
 Google Cloud SQL 
   MySQL
 
-https://codelabs.developers.google.com/codelabs/cloud-app-engine-springboot/index.html?index=..%2F..%2Findex#0
+Pom based on https://github.com/GoogleCloudPlatform/java-docs-samples/blob/master/appengine-java8/helloworld/pom.xml
+
+https://github.com/GoogleCloudPlatform/app-gradle-plugin/issues/134
