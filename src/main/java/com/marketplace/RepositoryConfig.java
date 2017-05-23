@@ -1,5 +1,6 @@
 package com.marketplace;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -12,9 +13,6 @@ import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaDialect;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
 /**
@@ -25,17 +23,41 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration(exclude=DataSourceAutoConfiguration.class)
 public class RepositoryConfig {
 
+    @Value("${repository.url}")
+    private String url;
+
+    @Value("${repository.username}")
+    private String username;
+
+    @Value("${repository.password}")
+    private String password;
+
+    @Value("${repository.className}")
+    private String className;
+
     @Bean
     public DataSource dataSource() {
-        String url = "jdbc:google:mysql://salomax-livremkt:livremarketplace/livremarketplace?user=root";
-        String username = "root";
-        String password = "";
-        String className = "com.mysql.jdbc.GoogleDriver";
 
-//        String url = "jdbc:mysql://localhost:3306/livremarketplace";
-//        String username = "root";
-//        String password = "";
-//        String className = "com.mysql.jdbc.Driver";
+//        String url;
+//        String username;
+//        String password;
+//        String className;
+//
+//        if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+//
+//            url = "jdbc:google:mysql://salomax-livremkt:livremarketplace/livremarketplace?user=root";
+//            username = "root";
+//            password = "";
+//            className = "com.mysql.jdbc.GoogleDriver";
+//
+//        } else {
+//
+//            url = "jdbc:mysql://localhost:3306/livremarketplace";
+//            username = "root";
+//            password = "";
+//            className = "com.mysql.jdbc.Driver";
+//
+//        }
 
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 
@@ -73,16 +95,5 @@ public class RepositoryConfig {
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         return factoryBean;
     }
-
-
-//    @Bean
-//    public EntityManagerFactory entityManagerFactory() {
-//        return Persistence.createEntityManagerFactory("livremarketplace");
-//    }
-
-//    @Bean
-//    public EntityManager entityManager() {
-//        return entityManagerFactory();
-//    }
 
 }
