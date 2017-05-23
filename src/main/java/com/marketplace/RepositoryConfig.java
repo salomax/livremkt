@@ -1,5 +1,6 @@
 package com.marketplace;
 
+import com.google.appengine.api.utils.SystemProperty;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -23,41 +24,30 @@ import javax.sql.DataSource;
 @EnableAutoConfiguration(exclude=DataSourceAutoConfiguration.class)
 public class RepositoryConfig {
 
-    @Value("${repository.url}")
-    private String url;
-
-    @Value("${repository.username}")
-    private String username;
-
-    @Value("${repository.password}")
-    private String password;
-
-    @Value("${repository.className}")
-    private String className;
-
     @Bean
     public DataSource dataSource() {
 
-//        String url;
-//        String username;
-//        String password;
-//        String className;
-//
-//        if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
-//
-//            url = "jdbc:google:mysql://salomax-livremkt:livremarketplace/livremarketplace?user=root";
-//            username = "root";
-//            password = "";
-//            className = "com.mysql.jdbc.GoogleDriver";
-//
-//        } else {
-//
-//            url = "jdbc:mysql://localhost:3306/livremarketplace";
-//            username = "root";
-//            password = "";
-//            className = "com.mysql.jdbc.Driver";
-//
-//        }
+        String url;
+        String username;
+        String password;
+        String className;
+
+        // TODO do it by properties file
+        if (SystemProperty.environment.value() == SystemProperty.Environment.Value.Production) {
+
+            url = "jdbc:google:mysql://salomax-livremkt:livremarketplace/livremarketplace?user=root";
+            username = "root";
+            password = "";
+            className = "com.mysql.jdbc.GoogleDriver";
+
+        } else {
+
+            url = "jdbc:mysql://localhost:3306/livremarketplace";
+            username = "root";
+            password = "";
+            className = "com.mysql.jdbc.Driver";
+
+        }
 
         DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
 

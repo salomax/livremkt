@@ -16,26 +16,9 @@ import java.util.logging.Logger;
 @SpringBootApplication(exclude = JmxAutoConfiguration.class)
 public class LivreMarketplaceApplication extends SpringBootServletInitializer {
 
-    private static final Logger log = Logger.getLogger(LivreMarketplaceApplication.class.getName());
-
     public static void main(String[] args) {
         SpringApplication application = new SpringApplication(LivreMarketplaceApplication.class);
-        setProfile(application);
         application.run(args);
-    }
-
-    private static void setProfile(SpringApplication application) {
-
-        log.warning("Environment " + LivreMarketplaceUtils.getEnvironment());
-
-        if (LivreMarketplaceUtils.isProduction()) {
-            log.warning("Set profile to server");
-            application.setAdditionalProfiles("server");
-        } else {
-            log.warning("Set profile to dev");
-            application.setAdditionalProfiles("dev");
-        }
-
     }
 
 }
