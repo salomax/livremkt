@@ -3,9 +3,10 @@
     <application>livremarketplace</application>
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
-    <runtime>java7</runtime>
     <use-google-connector-j>true</use-google-connector-j>
+    <runtime>java7</runtime>
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
+        <property name="spring.jmx.enabled" value="false"/>
     </system-properties>
 </appengine-web-app>

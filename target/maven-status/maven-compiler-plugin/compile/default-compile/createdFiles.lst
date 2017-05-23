@@ -1,0 +1,12 @@
+com/marketplace/controller/ProductController.class
+com/marketplace/LivreMarketplaceApplication.class
+com/marketplace/RepositoryConfig.class
+com/marketplace/exception/EntityNotFoundException.class
+com/marketplace/entity/Product.class
+com/marketplace/exception/ApiError.class
+com/marketplace/entity/AbstractEntity.class
+com/marketplace/service/ProductService.class
+com/marketplace/controller/RestResponseEntityExceptionHandler$1.class
+com/marketplace/repository/ProductRepository.class
+com/marketplace/controller/RestResponseEntityExceptionHandler.class
+com/marketplace/service/AbstractEntityService.class
