@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
-    <application>livremarketplace</application>
+    <application>salomax-livremkt</application>
     <version>1</version>
+
+    <public-root>/static</public-root>
+
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
     <use-google-connector-j>true</use-google-connector-j>

@@ -1,7 +1,6 @@
 package com.marketplace;
 
 import com.google.appengine.api.utils.SystemProperty;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;

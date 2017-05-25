@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.logging.Logger;
 
@@ -40,7 +41,7 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @RequestMapping(value = "/product/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)
     public Product getProducts(@PathVariable Integer id) throws EntityNotFoundException {
         log.fine(format("Get product %s", id));
         return this.productService.getById(id);
