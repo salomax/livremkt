@@ -38,11 +38,10 @@
 	 */
 	$.product.api = {
 
-        SERVICE_NAME : 'product',
-        VERSION : 'v1',
+        SERVICE_NAME : '/product',
 
-        service : function(method) {
-            return ['/', $.product.api.SERVICE_NAME, '/', $.product.api.VERSION, '/', method].join(''); 
+        service : function() {
+            return $.product.api.SERVICE_NAME;
         },
 
 		/* 
@@ -109,7 +108,7 @@
 
         list : function(options) {
             return $.api.request($.util.mergeObjects({
-                path : $.product.api.service('list')
+                path : $.product.api.service()
             }, options));    
         }
 

@@ -2,9 +2,7 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
     <application>salomax-livremkt</application>
     <version>1</version>
-
     <public-root>/static</public-root>
-
     <threadsafe>true</threadsafe>
     <sessions-enabled>true</sessions-enabled>
     <use-google-connector-j>true</use-google-connector-j>
@@ -12,5 +10,17 @@
     <system-properties>
         <property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
         <property name="spring.jmx.enabled" value="false" />
+
+        <!--<property name="security.oauth2.client.client-id" value="153735516776-pn3ugri15npc97a7ttrtm2opl34sf5f9.apps.googleusercontent.com" />-->
+        <!--<property name="security.oauth2.client.client-secret" value="5mHIWwhHS5tRENJOMx2XCxgi" />-->
+        <!--<property name="security.oauth2.client.access-token-uri" value="https://www.googleapis.com/oauth2/v4/token" />-->
+        <!--<property name="security.oauth2.client.client-authentication-scheme" value="form" />-->
+
+        <!--<property name="security.oauth2.client.scope" value="openid, email, profile" />-->
+        <!--<property name="security.oauth2.resource.user-info-uri" value="https://www.googleapis.com/oauth2/v3/userinfo" />-->
+        <!--<property name="security.oauth2.resource.prefer-token-info" value="true" />-->
+
+        <!--security.oauth2.resource.jwt.key-uri=${app.auth-server.host}/oauth/token_key-->
+
     </system-properties>
 </appengine-web-app>

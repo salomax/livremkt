@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.jmx.JmxAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
@@ -17,6 +19,7 @@ import java.util.logging.Logger;
  * @since 21/05/17
  */
 @SpringBootApplication(exclude = JmxAutoConfiguration.class)
+@ComponentScan( basePackages = "com.marketplace"  )
 public class LivreMarketplaceApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

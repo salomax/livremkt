@@ -19,16 +19,18 @@ import com.marketplace.entity.Product;
 import com.marketplace.exception.EntityNotFoundException;
 import com.marketplace.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
-
+    
 /**
  * @author salomao.marcos@gmail.com
  * @since 21/05/17
@@ -41,6 +43,11 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
+    @RequestMapping(value = "/api/product", method = RequestMethod.GET)
+    public List<Product> getProducts() throws EntityNotFoundException {
+        log.fine("List products");
+        return this.productService.list();
+    }
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)
     public Product getProducts(@PathVariable Integer id) throws EntityNotFoundException {
         log.fine(format("Get product %s", id));

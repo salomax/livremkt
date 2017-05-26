@@ -25,13 +25,13 @@
  * Workaroung for appengine problem.
  * https://code.google.com/p/googleappengine/issues/detail?id=9384
  */
-var PRODUCTION_HOST = 'salomax-marketplace.appspot.com';
+var PRODUCTION_HOST = 'salomax-livremkt.appspot.com';
 var DEVELOPMENT_HOST = 'localhost:8080';
 var host = PRODUCTION_HOST;
 if (document.location.host.indexOf('localhost') >= 0) {
 	host = DEVELOPMENT_HOST
 }
-var API_ROOT = '//' + host + '/_ah/api';
+var API_ROOT = '//' + host + '/api';
 
 /**
  * Funções para serem carregadas no load da página main.
@@ -180,7 +180,15 @@ var API_ROOT = '//' + host + '/_ah/api';
 				$.view.progressBar(options).update(50, messages.progressbar.waitingserver);
 
 	            // Execute request gapi client
-	            request = gapi.client.request(options).then(success, failure);
+	            // request = gapi.client.request(options).then(success, failure);
+	            var token = "Bearer " + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+	            $.ajax({
+                  url: options.root + options.path,
+                  type: 'GET',
+                  headers: { "Authorization" : token },
+                  success: success,
+                  error: failure
+                });
 
             });
 	
@@ -205,8 +213,8 @@ var API_ROOT = '//' + host + '/_ah/api';
 						icon : 'ion-arrow-graph-up-right',
 						title : messages.menu.dashboard.title,
 						subtitle : messages.menu.dashboard.subtitle,
-						html : '/dashboard/dashboard.html', 
-						script : '/dashboard/dashboard.js'
+						html : '/app/dashboard/dashboard.html',
+						script : '/app/dashboard/dashboard.js'
 					}, 
 		 			{
 		 				header : messages.menu.header.commercial
@@ -215,8 +223,8 @@ var API_ROOT = '//' + host + '/_ah/api';
 						icon : 'ion-ios-cart-outline',
 						title : messages.menu.purchase.title,
 						subtitle : messages.menu.purchase.subtitle,
-						html : '/purchase/purchase.html', 
-						script : '/purchase/purchase.js',
+						html : '/app/purchase/purchase.html',
+						script : '/app/purchase/purchase.js',
 						callback : function() {
 							$.purchase.view.loadPage();
 						}
@@ -225,8 +233,8 @@ var API_ROOT = '//' + host + '/_ah/api';
 						icon : 'ion-social-usd',
 						title : messages.menu.sale.title,
 						subtitle : messages.menu.sale.subtitle,
-						html : '/sale/sale.html', 
-						script : '/sale/sale.js',
+						html : '/app/sale/sale.html',
+						script : '/app/sale/sale.js',
 						callback : function() {							            
 							$.sale.view.loadPage();
 						}
@@ -238,8 +246,8 @@ var API_ROOT = '//' + host + '/_ah/api';
 						icon : 'ion-cube',
 						title : messages.menu.product.title,
 						subtitle : messages.menu.product.subtitle,
-						html : '/product/product.html', 
-						script : '/product/product.js',
+						html : '/app/product/product.html',
+						script : '/app/product/product.js',
 						callback : function() {
 							$.product.view.loadPage();
 						}
@@ -248,8 +256,8 @@ var API_ROOT = '//' + host + '/_ah/api';
 						icon : 'ion-ios-people',
 						title : messages.menu.supplier.title,
 						subtitle : messages.menu.supplier.subtitle,
-						html : '/supplier/supplier.html', 
-						script : '/supplier/supplier.js',
+						html : '/app/supplier/supplier.html',
+						script : '/app/supplier/supplier.js',
 						callback : function() {
 							$.supplier.view.loadPage();
 						}
@@ -258,8 +266,8 @@ var API_ROOT = '//' + host + '/_ah/api';
 						icon : 'ion-happy-outline',
 						title : messages.menu.customer.title,
 						subtitle : messages.menu.customer.subtitle,
-						html : '/customer/customer.html', 
-						script : '/customer/customer.js',
+						html : '/app/customer/customer.html',
+						script : '/app/customer/customer.js',
 						callback : function() {
 							$.customer.view.loadPage();
 						}

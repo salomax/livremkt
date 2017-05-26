@@ -37,7 +37,7 @@ function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
 
     $.ajax({
-        url: "/main",
+        url: "/app/main.html",
         context: document.body
     }).done(function(response) {
 
