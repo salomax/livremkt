@@ -2,6 +2,7 @@ package com.marketplace.controller;
 
 import com.marketplace.exception.ApiError;
 import com.marketplace.exception.EntityNotFoundException;
+import com.marketplace.exception.UserAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -20,8 +21,19 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ApiError exception(final EntityNotFoundException exception) {
-        return new ApiError("Entity not found") {
-            public Integer getId() {
+        return new ApiError(exception) {
+            public Object getId() {
+                return exception.getId();
+            }
+        };
+    }
+
+    @ExceptionHandler(UserAccessException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ResponseBody
+    public ApiError exception(final UserAccessException exception) {
+        return new ApiError(exception) {
+            public Object getId() {
                 return exception.getId();
             }
         };

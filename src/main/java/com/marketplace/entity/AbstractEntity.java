@@ -1,5 +1,7 @@
 package com.marketplace.entity;
 
+import com.google.appengine.repackaged.com.google.gson.Gson;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,23 +13,13 @@ import java.io.Serializable;
  * @since 21/05/17
  */
 @MappedSuperclass
-public abstract class AbstractEntity implements Serializable {
+public abstract class AbstractEntity<T> implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
+    public abstract T getId();
 
     @Override
     public int hashCode() {
-        return id.hashCode();
+        return this.getId().hashCode();
     }
 
     @Override
@@ -41,6 +33,11 @@ public abstract class AbstractEntity implements Serializable {
         }
         AbstractEntity other = (AbstractEntity) obj;
         return getId().equals(other.getId());
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
     }
 
 }

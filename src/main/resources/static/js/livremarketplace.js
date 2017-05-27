@@ -147,7 +147,7 @@ var API_ROOT = '//' + host + '/api';
 	            };
 
 	            // fn error
-	            var failure = function(reason) {
+	            var failure = function(reason, textStatus, errorThrown) {
 
 	                // update progress bar
 	                $.view.progressBar(options).update(100, messages.progressbar.done);
@@ -164,10 +164,10 @@ var API_ROOT = '//' + host + '/api';
 	               // show error dialog
 	                $('.modal-dialog-message').modalDialog({
 	                    title: title,
-	                    message: $('<div>').text(message).append($('<div class="messages-errormessage">').text($.i18n.prop(reason.result.error.message)))
+	                    message: $('<div>').text(message).append($('<div class="messages-errormessage">').text($.i18n.prop(reason.responseJSON.message)))
 	                }).danger();
 
-	                console.warn($.i18n.prop(reason.result.error.message));
+	                console.warn($.i18n.prop(reason.responseJSON.message));
 
 	                // Reject promise
 	                def.reject(reason);
@@ -179,13 +179,17 @@ var API_ROOT = '//' + host + '/api';
 	            // update progress bar
 				$.view.progressBar(options).update(50, messages.progressbar.waitingserver);
 
-	            // Execute request gapi client
-	            // request = gapi.client.request(options).then(success, failure);
+	            // Execute request
 	            var token = "Bearer " + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
 	            $.ajax({
                   url: options.root + options.path,
-                  type: 'GET',
-                  headers: { "Authorization" : token },
+                  data: JSON.stringify(options.body),
+                  type: (options.method ? options.method : 'GET'),
+                  dataType: (options.method == 'DELETE' || options.method == 'PUT' ? 'text' : 'json'),
+                  headers: {
+                    'Authorization' : token,
+                    'Content-Type': 'application/json'
+                  },
                   success: success,
                   error: failure
                 });

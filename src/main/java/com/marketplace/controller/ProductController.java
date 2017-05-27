@@ -20,10 +20,7 @@ import com.marketplace.exception.EntityNotFoundException;
 import com.marketplace.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -44,14 +41,34 @@ public class ProductController {
     private ProductService productService;
 
     @RequestMapping(value = "/api/product", method = RequestMethod.GET)
-    public List<Product> getProducts() throws EntityNotFoundException {
+    public List<Product> list() throws EntityNotFoundException {
         log.fine("List products");
         return this.productService.list();
     }
+    
     @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)
-    public Product getProducts(@PathVariable Integer id) throws EntityNotFoundException {
+    public Product get(@PathVariable String id) throws EntityNotFoundException {
         log.fine(format("Get product %s", id));
         return this.productService.getById(id);
+    }
+
+    @RequestMapping(value = "/api/product", method = RequestMethod.POST)
+    public Product save(@RequestBody Product product) throws EntityNotFoundException {
+        log.fine("Save product");
+        return this.productService.save(product);
+    }
+
+    @RequestMapping(value = "/api/product/{id}", method = RequestMethod.PUT)
+    public void save(@PathVariable String id, @RequestBody Product product) throws EntityNotFoundException {
+        log.fine("Update product");
+        product.setId(this.productService.getById(id).getId());
+        this.productService.save(product);
+    }
+
+    @RequestMapping(value = "/api/product/{id}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable String id) throws EntityNotFoundException {
+        log.fine("Delete product");
+        this.productService.delete(this.productService.getById(id));
     }
 
 }

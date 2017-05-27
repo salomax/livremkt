@@ -19,7 +19,6 @@ import java.util.logging.Logger;
  * @since 21/05/17
  */
 @SpringBootApplication(exclude = JmxAutoConfiguration.class)
-@ComponentScan( basePackages = "com.marketplace"  )
 public class LivreMarketplaceApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

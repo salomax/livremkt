@@ -8,8 +8,8 @@ public class ApiError {
 
     private String message;
 
-    public ApiError(String message) {
-        this.message = message;
+    public ApiError(APIExeption apiExeption) {
+        this.message = apiExeption.getMessage();
     }
 
     public String getMessage() {

@@ -40,8 +40,8 @@
 
         SERVICE_NAME : '/product',
 
-        service : function() {
-            return $.product.api.SERVICE_NAME;
+        service : function(pathVariable) {
+            return $.product.api.SERVICE_NAME + (pathVariable? '/' + pathVariable : '');
         },
 
 		/* 
@@ -51,7 +51,7 @@
 
             // Execute product delete endpoint 
             return $.api.request({
-                path : $.product.api.service('search'),
+                path : $.product.api.service(),
                 method : 'POST',
                 body : _data,
                 dialogError : {
@@ -69,7 +69,7 @@
 
             // Execute product save endpoint 
             return $.api.request({
-                path : $.product.api.service('save'),
+                path : $.product.api.service(),
                 method : 'POST',
                 body : _data,
                 progressBar : $('.progress-bar-form'),
@@ -82,7 +82,7 @@
 					message : messages.product.save.dialog.errormessage
                 }
             }).then(function(response) {
-                $('form.product-form').populate(response.result);
+                $('form.product-form').populate(response);
                 return response;
             });
 
@@ -171,7 +171,7 @@
 					}
 				],
 				pageList : [15],
-				data : _data.items,
+				data : _data,
 				pagination : true,
 				search : true,
 				// striped : true
@@ -198,7 +198,7 @@
                 function(response) {
 
                     // Create table with response result
-                    $.product.view.bindTable(response.result);
+                    $.product.view.bindTable(response);
 
                 });
 
@@ -254,19 +254,19 @@
 
 				    	// Atualizar lista
 						var row = $('table.table-products').bootstrapTable(
-							'getRowByUniqueId', _data.result.id);
+							'getRowByUniqueId', _data.id);
 
 						// Insere se não existe ou atualiza caso já esteja inserida
 						if (row == null) {
 					    	$('table.table-products').bootstrapTable('insertRow', {
 				                index: 0,
-				                row: _data.result
+				                row: _data
 				            });
 						} else {
 
 					    	$('table.table-products').bootstrapTable('updateByUniqueId', {
-				                id: _data.result.id,
-				                row: _data.result
+				                id: _data.id,
+				                row: _data
 				            });
 						}
 

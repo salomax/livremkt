@@ -20,7 +20,7 @@ public class ProductService {
     @Autowired
     private ProductRepository productRepository;
 
-    public Product getById(@NotNull Integer id) throws EntityNotFoundException {
+    public Product getById(@NotNull String id) throws EntityNotFoundException {
 
         Product product = this.productRepository.findOne(id);
 
@@ -33,6 +33,23 @@ public class ProductService {
 
     public List<Product> list() {
         return Lists.newArrayList(this.productRepository.findAll());
+    }
+
+    public Product save(Product product) throws EntityNotFoundException {
+        if (product.getId() != null) {
+            // check if exists or is a fake id
+            Product productStored = this.getById(product.getId());
+            product.setUserPermissions(productStored.getUserPermissions());
+        }
+        return this.productRepository.save(product);
+    }
+
+    public void delete(Product product) throws EntityNotFoundException {
+        if (product.getId() != null) {
+            // check if exists or is a fake id
+            this.getById(product.getId());
+        }
+        this.productRepository.delete(product);
     }
 
 }
