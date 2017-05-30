@@ -38,18 +38,21 @@ public abstract class AbstractUserEntityService<E extends AbstractUserEntity, R 
      }
 
      public E save(E e) throws EntityNotFoundException {
-          if (e.getId() != null) {
-               // check if exists or is a fake id
-               this.getById(e.getId());
-          }
+          setUserPermissions(e);
           return this.getRepository().save(e);
      }
 
-     public void delete(E e) throws EntityNotFoundException {
+     private void setUserPermissions(E e) throws EntityNotFoundException {
           if (e.getId() != null) {
                // check if exists or is a fake id
-               this.getById(e.getId());
+               E old = this.getById(e.getId());
+               // Persist same user permissions
+               e.setUserPermissions(old.getUserPermissions());
           }
+     }
+
+     public void delete(E e) throws EntityNotFoundException {
+          setUserPermissions(e);
           this.getRepository().delete(e);
      }
 

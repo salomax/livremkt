@@ -21,7 +21,7 @@ public class Order extends AbstractUserEntity {
     private List<Item> items = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "customer_id")
+    @JoinColumn(name = "customer_id")
     private Customer customer;
 
     public Date getDate() {

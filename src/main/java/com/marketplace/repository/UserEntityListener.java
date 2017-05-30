@@ -6,6 +6,7 @@ import com.marketplace.utils.BeanUtils;
 
 import javax.annotation.PreDestroy;
 import javax.persistence.PostLoad;
+import javax.persistence.PostUpdate;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import java.util.logging.Logger;
@@ -24,7 +25,7 @@ public class UserEntityListener {
         filter.insertUserPermission(userEntity);
     }
 
-    @PreUpdate
+    @PostUpdate
     public void onUpdate(final AbstractUserEntity userEntity) throws UserAccessException {
         UserEntityFilter filter = BeanUtils.getBean(UserEntityFilter.class);
         if (!filter.canWrite(userEntity.getUserPermissions())) {

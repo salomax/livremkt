@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.mercadolibre:sdk:0.0.2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mercadolibre/sdk/0.0.2-SNAPSHOT/sdk-0.0.2-20130413.195604-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mercadolibre/sdk/0.0.2-SNAPSHOT/sdk-0.0.2-20130413.195604-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/mercadolibre/sdk/0.0.2-SNAPSHOT/sdk-0.0.2-20130413.195604-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

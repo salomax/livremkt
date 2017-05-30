@@ -26,7 +26,7 @@ public abstract class AbstractUserEntity {
     private String id;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "entity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserPermission> userPermissions = new ArrayList<>();
 
     public String getId() {

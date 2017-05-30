@@ -1,3 +1,5 @@
+USE livremarketplace;
+
 DROP TABLE `USER_PERMISSION`;
 DROP TABLE `PRODUCT`;
 DROP TABLE `CUSTOMER`;
@@ -35,5 +37,5 @@ CREATE TABLE `USER_PERMISSION` (
   `reading` tinyint(1) DEFAULT '0',
   `writing` tinyint(1) DEFAULT '0',
   `deleting` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

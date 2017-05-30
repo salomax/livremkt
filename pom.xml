@@ -138,6 +138,12 @@
         <version>3.5</version>
     </dependency>
 
+    <dependency>
+        <groupId>com.mercadolibre</groupId>
+        <artifactId>sdk</artifactId>
+        <version>0.0.2-SNAPSHOT</version>
+    </dependency>
+
 </dependencies>
 
 <build>
@@ -173,5 +179,12 @@
     </plugins>
 
 </build>
+
+<repositories>
+    <repository>
+        <id>mercadolibre-snapshots</id>
+        <url>https://github.com/mercadolibre/java-sdk-repo/raw/master/snapshots</url>
+    </repository>
+</repositories>
 
 </project>

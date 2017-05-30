@@ -8,10 +8,10 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "ITEM")
-public class Item {
+public class Item extends SimpleEntity {
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(referencedColumnName = "product_id")
+    @JoinColumn(name = "product_id")
     private Product product;
 
     private Double quantity;

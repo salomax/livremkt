@@ -17,9 +17,6 @@ import static com.marketplace.utils.SecurityUtils.getGooglePrincipal;
 @Component
 public class UserEntityFilter {
 
-    @Autowired
-    private UserPermissionRepository userPermissionRepository;
-
     public void insertUserPermission(AbstractUserEntity userEntity) {
         UserPermission userPermission = new UserPermission(
                 getGooglePrincipal().getEmail(), userEntity, true, true, true);
