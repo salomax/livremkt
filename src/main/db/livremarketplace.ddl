@@ -1,10 +1,30 @@
 DROP TABLE `USER_PERMISSION`;
 DROP TABLE `PRODUCT`;
+DROP TABLE `CUSTOMER`;
+DROP TABLE `SUPPLIER`;
 
 CREATE TABLE `PRODUCT` (
   `id` varbinary(36) NOT NULL,
   `code` varchar(32) DEFAULT NULL,
   `name` varchar(256) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `CUSTOMER` (
+  `id` varbinary(36) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `email` varchar(254) DEFAULT NULL,
+  `telephone` varchar(32) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `SUPPLIER` (
+  `id` varbinary(36) NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `email` varchar(254) DEFAULT NULL,
+  `telephone` varchar(32) DEFAULT NULL,
+  `address` text DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -16,6 +36,4 @@ CREATE TABLE `USER_PERMISSION` (
   `writing` tinyint(1) DEFAULT '0',
   `deleting` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `entity_id` (`entity_id`),
-  CONSTRAINT `user_permission_ibfk_1` FOREIGN KEY (`entity_id`) REFERENCES `PRODUCT` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

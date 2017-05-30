@@ -1,7 +1,9 @@
 package com.marketplace.service;
 
 import com.marketplace.entity.Product;
+import com.marketplace.entity.Supplier;
 import com.marketplace.repository.ProductRepository;
+import com.marketplace.repository.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,15 +12,15 @@ import org.springframework.stereotype.Service;
  * @since 21/05/17
  */
 @Service
-public class ProductService extends AbstractUserEntityService<Product, ProductRepository> {
+public class SupplierService extends AbstractUserEntityService<Supplier, SupplierRepository> {
 
     @Autowired
-    private ProductRepository productRepository;
+    private SupplierRepository repository;
 
 
     @Override
-    protected ProductRepository getRepository() {
-        return this.productRepository;
+    protected SupplierRepository getRepository() {
+        return this.repository;
     }
 
 }

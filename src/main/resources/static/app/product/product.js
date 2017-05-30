@@ -44,24 +44,6 @@
             return $.product.api.SERVICE_NAME + (pathVariable? '/' + pathVariable : '');
         },
 
-		/* 
-		 * Método destinado à pesquisar pelo nome ou código os produtos cadastrados.
-		 */
-		search : function(_data) {
-
-            // Execute product delete endpoint 
-            return $.api.request({
-                path : $.product.api.service(),
-                method : 'POST',
-                body : _data,
-                dialogError : {
-					title : messages.product.search.dialog.title,
-					message : messages.product.search.dialog.errormessage
-                }
-            });  
-
-		}, // Fim search
-
 		/**
 		 *  Método persiste o produto.
 		 */
@@ -72,7 +54,6 @@
                 path : $.product.api.service(),
                 method : 'POST',
                 body : _data,
-                progressBar : $('.progress-bar-form'),
                 dialogSuccess : {
 					title : messages.product.save.dialog.title,
 					message : messages.product.save.dialog.success 
@@ -97,7 +78,6 @@
             return $.api.request({
                 path : $.product.api.service(_id),
                 method : 'DELETE',
-                progressBar : $('.progress-bar-table'),
                 dialogError : {
 					title : messages.product.delete.dialog.title,
 					message : messages.product.delete.dialog.errormessage
@@ -105,12 +85,6 @@
             });
 
 		}, // Fim delete
-
-        list : function(options) {
-            return $.api.request($.util.mergeObjects({
-                path : $.product.api.service()
-            }, options));    
-        }
 
 	}; // Fim API
 
@@ -124,59 +98,55 @@
 		/**
 		 * Método destinado à criar a tabela com os produtos.
 		 */ 
-		bindTable : function(_data) {
+		bindTable : function() {
 
 			// Construir tabela
-			$('table.table-products').bootstrapTable({
-				uniqueId : 'id',
-				columns : [
-					{
-						field: 'id',
-						visible : false
-					},
-					{
-						field : 'code',
-						title : messages.product.code,
-						searchable : true,
-						'class' : 'col-sm-1'
-					},
-					{
-						field : 'name',
-						title : messages.product.name,
-						searchable : true,
-                        'class' : 'col-sm-9'                        
-					},{
-						title : '',
-						align : 'center',
-						searchable : false,
-						'class' : 'col-sm-3',
-						formatter : $.common.view.tableactionbuttons,
-						events : {
-							'click button.delete' : function(e, value, row, index) {
-								$.product.api.delete(row.id).then(
-									function() {
-											$('table.table-products').bootstrapTable('remove', {
-											                field: 'id',
-											                values: [row.id]
-											            });
-										});
-							},
-							'click button.update' : function(e, value, row, index) {
-								// mostar tab do form
-								$('.nav-tabs a[href="#tab_2"]').tab('show');
-								// Preencher form
-								$('form.product-form').populate(row);
-							}
-						}				
-					}
-				],
-				pageList : [15],
-				data : _data,
-				pagination : true,
-				search : true,
-				// striped : true
+			$('table.table-products').dataTable({
+    			service: $.product.api.service(),
+    			errorMessage: messages.product.list.dialog.errormessage,
+			    columns: [
+                     {
+                         field: 'id',
+                         visible : false
+                     },
+                     {
+                         field : 'code',
+                         title : messages.product.code,
+                         searchable : true,
+                         sortable: true,
+                         'class' : 'col-sm-1'
+                     },
+                     {
+                         field : 'name',
+                         title : messages.product.name,
+                         searchable : true,
+                         sortable: true,
+                         'class' : 'col-sm-9'
+                     },{
+                         title : '',
+                         align : 'center',
+                         searchable : false,
+                         'class' : 'col-sm-3',
+                         formatter : $.common.view.tableactionbuttons,
+                         events : {
+                             'click button.delete' : function(e, value, row, index) {
+                                 $.product.api.delete(row.id).then(
+                                     function() {
+                                             $('table.table-products').bootstrapTable('remove', {
+                                                             field: 'id',
+                                                             values: [row.id]
+                                                         });
+                                         });
+                             },
+                             'click button.update' : function(e, value, row, index) {
+                                 // mostar tab do form
+                                 $('.nav-tabs a[href="#tab_save"]').tab('show');
+                                 // Preencher form
+                                 $('form.product-form').populate(row);
+                             }
+                         }
+                     }]
 			});
-			$('table').fadeIn();
 
 		}, // Fim bindTable
 
@@ -185,22 +155,7 @@
 		 */ 
 		loadTable : function() {
 
-            $('table').fadeOut();
-
-            // Execute product list endpoint 
-            var request = $.product.api.list({
-                progressBar : $('.progress-bar-table'),
-                dialogError : {
-                    title : messages.product.list.dialog.title,
-                    message : messages.product.list.dialog.errormessage
-                }
-            }).then(
-                function(response) {
-
-                    // Create table with response result
-                    $.product.view.bindTable(response);
-
-                });
+            $.product.view.bindTable();
 
 		}, // Fim loadTable
 
@@ -213,7 +168,7 @@
 		    $('span.tab_list').text(messages.product.tab.list);
 		    $('span.tab_save').text(messages.product.tab.save);
 		    $('h3.product_save_title').text(messages.product.save.title);
-		    $('span.new-item').text(messages.action.new_item);
+
 		    $('small.product_save_subtitle').text(messages.product.save.subtitle);
 		    $('label.name').text(messages.product.name);
 		    $('input[name="name"]').attr('placeholder', messages.product.form.name.placeholder);
@@ -243,6 +198,7 @@
 			     * Ação ao submeter o formulário.
 			     */
 			    submitHandler: function(form, event) {
+
 			    	// não submete form
 			    	event.preventDefault();
 

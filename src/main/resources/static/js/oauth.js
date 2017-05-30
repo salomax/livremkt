@@ -77,3 +77,20 @@ function signOut() {
       window.location = '/'
     });
   }
+
+$.oauth = {
+    refresh: function() {
+        gapi.auth2.getAuthInstance().currentUser.get().reloadAuthResponse().then(
+            function() {
+               // show error dialog
+                $('.modal-dialog-message').modalDialog({
+                    title: messages.oauth.token.refresh.title,
+                    message: $('<div>').text(messages.oauth.token.refresh.message)
+                }).info();
+            },
+            function() {
+                signOut();
+            }
+        );
+    }
+}

@@ -1,14 +1,14 @@
 package com.marketplace.repository;
 
-import com.google.common.collect.Lists;
 import com.marketplace.entity.AbstractUserEntity;
 import com.marketplace.entity.UserPermission;
 import com.marketplace.security.GooglePrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
+import static com.marketplace.utils.SecurityUtils.getGooglePrincipal;
 
 /**
  * @author salomao.marcos@gmail.com
@@ -66,11 +66,6 @@ public class UserEntityFilter {
         }
 
         return false;
-    }
-
-    private GooglePrincipal getGooglePrincipal() {
-        return (GooglePrincipal) SecurityContextHolder
-                    .getContext().getAuthentication().getPrincipal();
     }
 
 }

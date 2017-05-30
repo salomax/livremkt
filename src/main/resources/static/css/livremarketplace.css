@@ -1294,7 +1294,11 @@ a:focus {
 .progress>.progress-bar {
     -webkit-box-shadow: none;
     box-shadow: none
+    margin-top: 1px;
+    margin-top: 0px;
+    background-color: none;
 }
+
 .progress,
 .progress>.progress-bar,
 .progress .progress-bar,
@@ -1684,6 +1688,7 @@ a:focus {
     position: relative;
     border-bottom: 1px solid #e5e5e5;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 .box-header.with-border {
     border-bottom: 1px solid #f4f4f4
@@ -2151,10 +2156,6 @@ a:focus {
     box-shadow: none;
     border-width: 1px
 }
-.btn:active {
-    -webkit-box-shadow:0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);
-    box-shadow:0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);
-}
 .btn:focus {
     outline: none
 }
@@ -2188,14 +2189,16 @@ a:focus {
     background-color: #e7e7e7
 }
 .btn-primary {
-    background-color: #303F9F;
-    border-color: #367fa9
+    background-color: #3D51B5;
+    border-color: #3D51B5
 }
 .btn-primary:hover,
 .btn-primary:active,
-.btn-primary.hover {
+.btn-primary:hover,
+ .btn-primary:active:hover{
     -webkit-box-shadow:0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);
     box-shadow:0 5px 11px 0 rgba(0,0,0,.18),0 4px 15px 0 rgba(0,0,0,.15);
+    background-color: #3D51B5;
 }
 .btn-success {
     background-color: #00a65a;
@@ -2203,7 +2206,7 @@ a:focus {
 }
 .btn-success:hover,
 .btn-success:active,
-.btn-success.hover {
+.btn-success:hover {
     background-color: #008d4c
 }
 .btn-info {
@@ -4829,4 +4832,105 @@ iframe[id="ssIFrame_google"] {
 .modal.fade:not(.in).bottom-right .modal-dialog {
     -webkit-transform: translate3d(25%, 25%, 0);
     transform: translate3d(25%, 25%, 0);
+}
+
+.tab-btn-md-round {
+    float: right !important;
+    margin-top: -15px;
+    padding-right: 15px;
+}
+
+.btn-md-round {
+    border-radius: 999em;
+    width: 56px;
+    height: 56px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    line-height: 1;
+    font-size: 36px;
+    color: rgba(255, 255, 255, 0.87);
+    position: relative;
+    top: -17px;
+    padding-top: 10px;
+    padding-left: 12px;
+    cursor: pointer;
+}
+
+.pagination>.active>a {
+    background-color: #3D51B5;
+    border-color: #3D51B5;
+}
+
+/* Make clicks pass-through */
+#nprogress {
+  pointer-events: none;
+}
+
+#nprogress .bar {
+  background: #3D51B5;
+  opacity: 0.5;
+  height: 3px;
+
+  position: fixed;
+  z-index: 1031;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+}
+
+/* Fancy blur effect */
+#nprogress .peg {
+  display: block;
+  position: absolute;
+  right: 0px;
+  width: 100px;
+  height: 100%;
+  box-shadow: 0 0 10px #29d, 0 0 5px #29d;
+  opacity: 1.0;
+
+  -webkit-transform: rotate(3deg) translate(0px, -4px);
+      -ms-transform: rotate(3deg) translate(0px, -4px);
+          transform: rotate(3deg) translate(0px, -4px);
+}
+
+/* Remove these to get rid of the spinner */
+#nprogress .spinner {
+  display: block;
+  position: fixed;
+  z-index: 1031;
+  top: 15px;
+  right: 15px;
+}
+
+#nprogress .spinner-icon {
+  width: 18px;
+  height: 18px;
+  box-sizing: border-box;
+
+  border: solid 2px transparent;
+  border-top-color: #29d;
+  border-left-color: #29d;
+  border-radius: 50%;
+
+  -webkit-animation: nprogress-spinner 400ms linear infinite;
+          animation: nprogress-spinner 400ms linear infinite;
+}
+
+.nprogress-custom-parent {
+  overflow: hidden;
+  position: relative;
+}
+
+.nprogress-custom-parent #nprogress .spinner,
+.nprogress-custom-parent #nprogress .bar {
+  position: absolute;
+}
+
+@-webkit-keyframes nprogress-spinner {
+  0%   { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
+}
+@keyframes nprogress-spinner {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

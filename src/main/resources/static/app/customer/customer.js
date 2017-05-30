@@ -38,30 +38,11 @@
      */
     $.customer.api = {
 
-        SERVICE_NAME : 'customer',
-        VERSION : 'v1',
+        SERVICE_NAME : '/customer',
 
-        service : function(method) {
-            return ['/', $.customer.api.SERVICE_NAME, '/', $.customer.api.VERSION, '/', method].join(''); 
+        service : function(pathVariable) {
+            return $.customer.api.SERVICE_NAME + (pathVariable? '/' + pathVariable : '');
         },
-
-        /* 
-         * Método destinado à pesquisar pelo nome ou código os clientes cadastrados.
-         */
-        search: function(_data) {
-
-            // Execute customers delete endpoint 
-            return $.api.request({
-                path : $.customer.api.service('search'),
-                method : 'POST',
-                body : _data,
-                dialogError : {
-                    title: messages.customer.search.dialog.title,
-                    message: messages.customer.search.dialog.errormessage
-                }
-            });            
-
-        }, // Fim search
 
         /**
          *  Método persiste o cliente.
@@ -70,10 +51,9 @@
 
             // Execute custumers delete endpoint 
             return $.api.request({
-                path : $.customer.api.service('save'),
+                path : $.customer.api.service(),
                 method : 'POST',
                 body : _data,
-                progressBar : $('.progress-bar-form'),
                 dialogSuccess : {
                     title: messages.customer.save.dialog.title,
                     message: messages.customer.save.dialog.success
@@ -98,7 +78,6 @@
             return $.api.request({
                 path : $.customer.api.service(_id),
                 method : 'DELETE',
-                progressBar : $('.progress-bar-table'),
                 dialogSuccess : {
                     title: messages.customer.delete.dialog.title,
                     message: messages.customer.delete.dialog.success
@@ -110,12 +89,6 @@
             });
 
         }, // Fim delete
-
-        list : function(options) {
-            return $.api.request($.util.mergeObjects({
-                path : $.customer.api.service('list')
-            }, options));    
-        }
 
     }; // Fim API
 
@@ -129,11 +102,12 @@
         /**
          * Método destinado à criar a tabela com os clientes.
          */
-        bindTable: function(_data) {
+        bindTable: function() {
 
             // Construir tabela
-            $('table.table-customers').bootstrapTable({
-                uniqueId: 'id',
+            $('table.table-customers').dataTable({
+    			service: $.customer.api.service(),
+    			errorMessage: messages.customer.list.dialog.errormessage,
                 columns: [{
                     field: 'id',
                     visible: false
@@ -167,15 +141,9 @@
                             $('.nav-tabs a[href="#tab_2"]').tab('show');
                         }
                     }
-                }],
-                pageList: [15],
-                data: _data.items,
-                pagination: true,
-                search: true,
-                // striped: true
+                }]
             });
 
-            $('table').fadeIn();
 
         }, // Fim bindTable
 
@@ -184,22 +152,7 @@
          */
         loadTable: function() {
 
-            $('table').fadeOut();            
-
-            // Execute custumers list endpoint 
-            var request = $.customer.api.list({
-                progressBar : $('.progress-bar-table'),
-                dialogError : {
-                    title : messages.customer.list.dialog.title,
-                    message : messages.customer.list.dialog.errormessage
-                }
-            }).then(
-                function(response) {
-
-                    // Create table with response result
-                    $.customer.view.bindTable(response.result);
-
-                });
+            $.customer.view.bindTable();
 
         }, // Fim loadTable
 
@@ -258,19 +211,19 @@
 
                         // Atualizar lista
                         var row = $('table.table-customers').bootstrapTable(
-                            'getRowByUniqueId', _data.result.id);
+                            'getRowByUniqueId', _data.id);
 
                         // Insere se não existe ou atualiza caso já esteja inserida
                         if (row == null) {
                             $('table.table-customers').bootstrapTable('insertRow', {
                                 index: 0,
-                                row: _data.result
+                                row: _data
                             });
                         } else {
 
                             $('table.table-customers').bootstrapTable('updateByUniqueId', {
-                                id: _data.result.id,
-                                row: _data.result
+                                id: _data.id,
+                                row: _data
                             });
                         }
 

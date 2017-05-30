@@ -39,30 +39,11 @@
     $.supplier.api = {
 
 
-        SERVICE_NAME : 'supplier',
-        VERSION : 'v1',
+        SERVICE_NAME : '/supplier',
 
-        service : function(method) {
-            return ['/', $.supplier.api.SERVICE_NAME, '/', $.supplier.api.VERSION, '/', method].join(''); 
+        service : function(pathVariable) {
+            return $.supplier.api.SERVICE_NAME + (pathVariable? '/' + pathVariable : '');
         },
-
-        /* 
-         * Método destinado à pesquisar pelo nome ou código os fornecedors cadastrados.
-         */
-        search: function(_data) {
-
-            // Execute supplier search endpoint 
-            return $.api.request({
-                path : $.supplier.api.service('search'),
-                method : 'POST',
-                body : _data,
-                dialogError : {
-                    title : messages.supplier.search.dialog.title,
-                    message : messages.supplier.search.dialog.errormessage
-                }
-            }); 
-
-        }, // End search()
 
         /**
          *  Método persiste o fornecedor.
@@ -71,10 +52,9 @@
 
             // Execute custumers delete endpoint 
             return $.api.request({
-                path : $.supplier.api.service('save'),
+                path : $.supplier.api.service(),
                 method : 'POST',
                 body : _data,
-                progressBar : $('.progress-bar-form'),
                 dialogSuccess : {
                     title : messages.supplier.save.dialog.title,
                     message : messages.supplier.save.dialog.success 
@@ -99,7 +79,6 @@
             return $.api.request({
                 path : $.supplier.api.service(_id),
                 method : 'DELETE',
-                progressBar : $('.progress-bar-table'),
                 dialogError : {
                     title : messages.supplier.delete.dialog.title,
                     message : messages.supplier.delete.dialog.errormessage
@@ -107,12 +86,6 @@
             });
 
         }, // End delete()
-
-        list : function(options) {
-            return $.api.request($.util.mergeObjects({
-                path : $.supplier.api.service('list')
-            }, options));    
-        } // End list()
 
     }; // Fim API
 
@@ -129,8 +102,9 @@
         bindTable: function(_data) {
 
             // Construir tabela
-            $('table.table-suppliers').bootstrapTable({
-                uniqueId: 'id',
+            $('table.table-suppliers').dataTable({
+    			service: $.supplier.api.service(),
+    			errorMessage: messages.supplier.list.dialog.errormessage,
                 columns: [{
                     field: 'id',
                     visible: false
@@ -164,15 +138,8 @@
                             $('.nav-tabs a[href="#tab_2"]').tab('show');
                         }
                     }
-                }],
-                pageList: [15],
-                data: _data.items,
-                pagination: true,
-                search: true,
-                // striped: true
+                }]
             });
-
-            $('table').fadeIn();
 
         }, // Fim bindTable
 
@@ -181,17 +148,7 @@
          */
         loadTable: function() {
 
-            $('table').fadeOut();            
-
-            $.supplier.api.list({
-                progressBar : $('.progress-bar-table'),
-                dialogError : {
-                    title : messages.supplier.list.dialog.title,
-                    message : messages.supplier.list.dialog.errormessage
-                }                
-            }).then(function(response) {
-                $.supplier.view.bindTable(response.result);
-            });
+            $.supplier.view.bindTable();
 
         }, // Fim loadTable
 
@@ -252,19 +209,19 @@
 
                         // Atualizar lista
                         var row = $('table.table-suppliers').bootstrapTable(
-                            'getRowByUniqueId', _data.result.id);
+                            'getRowByUniqueId', _data.id);
 
                         // Insere se não existe ou atualiza caso já esteja inserida
                         if (row == null) {
                             $('table.table-suppliers').bootstrapTable('insertRow', {
                                 index: 0,
-                                row: _data.result
+                                row: _data
                             });
                         } else {
 
                             $('table.table-suppliers').bootstrapTable('updateByUniqueId', {
-                                id: _data.result.id,
-                                row: _data.result
+                                id: _data.id,
+                                row: _data
                             });
                         }
 

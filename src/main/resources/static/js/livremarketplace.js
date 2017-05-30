@@ -86,15 +86,25 @@ var API_ROOT = '//' + host + '/api';
 		/**
 		 * Methods update a progress bar.
 		 */
-		progressBar : function(options) {
+		progressBar : function() {
 			return {
-				update : function(percent, messsage) {
-					if (options && options.progressBar) {
-						options.progressBar.progress(percent, messsage);
-					}
+			    start: function(options) {
+                    if (!options || !options.progressBar) {
+                        NProgress.configure({ parent: '.tab-content' });
+                    } else {
+                        NProgress.configure({ parent: options.progressBar });
+                    }
+                    NProgress.start();
+			    },
+				update: function(percent) {
+                    NProgress.set(percent);
+				},
+				done: function() {
+				    NProgress.done();
 				}
 			};
-		}
+		},
+
 	};
 
 	/****************************************************************************
@@ -125,6 +135,8 @@ var API_ROOT = '//' + host + '/api';
 		 */
 		request : function(options) {
 
+            $.view.progressBar().start(options);
+
             // Create promise
             var deferred = $.Deferred(function(def) {
 
@@ -132,7 +144,7 @@ var API_ROOT = '//' + host + '/api';
 	            var success = function(response) {
 
 	                // update progress bar
-	                $.view.progressBar(options).update(100, messages.progressbar.done);
+	                $.view.progressBar().done();
 
 	                // show success dialog
 	                if (options.dialogSuccess) {
@@ -150,22 +162,28 @@ var API_ROOT = '//' + host + '/api';
 	            var failure = function(reason, textStatus, errorThrown) {
 
 	                // update progress bar
-	                $.view.progressBar(options).update(100, messages.progressbar.done);
+                    $.view.progressBar().done();
 
-	                // build default message
-	                if (!options.dialogError) {
-	                	title = messages.dialog.title
-	                	message = messages.dialog.failure.message
-	                } else {
-	                	title = options.dialogError.title
-	                	message = options.dialogError.message
-	                }
+                    if (reason.status == 401) {
+                        $.oauth.refresh();
+                    } else {
 
-	               // show error dialog
-	                $('.modal-dialog-message').modalDialog({
-	                    title: title,
-	                    message: $('<div>').text(message).append($('<div class="messages-errormessage">').text($.i18n.prop(reason.responseJSON.message)))
-	                }).danger();
+                        // build default message
+                        if (!options.dialogError) {
+                            title = messages.dialog.title
+                            message = messages.dialog.failure.message
+                        } else {
+                            title = options.dialogError.title
+                            message = options.dialogError.message
+                        }
+
+                       // show error dialog
+                        $('.modal-dialog-message').modalDialog({
+                            title: title,
+                            message: $('<div>').text(message).append($('<div class="messages-errormessage">').text($.i18n.prop(reason.responseJSON.message)))
+                        }).danger();
+
+                    }
 
 	                console.warn($.i18n.prop(reason.responseJSON.message));
 
@@ -177,10 +195,14 @@ var API_ROOT = '//' + host + '/api';
 	            options.root = API_ROOT;
 
 	            // update progress bar
-				$.view.progressBar(options).update(50, messages.progressbar.waitingserver);
+				$.view.progressBar().update(0.5);
 
 	            // Execute request
 	            var token = "Bearer " + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+               window.requestOptions = {headers: {
+                    "Authorization": token,
+                    'Content-Type': 'application/json'
+                }};
 	            $.ajax({
                   url: options.root + options.path,
                   data: JSON.stringify(options.body),
@@ -198,6 +220,14 @@ var API_ROOT = '//' + host + '/api';
 	
             // return promise
             return deferred.promise();
+		},
+
+		loadToken: function() {
+            var token = "Bearer " + gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().id_token;
+            window.requestOptions = {headers: {
+                "Authorization": token,
+                'Content-Type': 'application/json'
+            }};
 		}
 
 
@@ -375,13 +405,14 @@ var API_ROOT = '//' + host + '/api';
 				$('input.datepicker').val('');
 
 				// Reset form button
-				$('button.new-item').bind('click', function() {
-				    	$(this).closest('form').trigger('reset');
-				    	$(this).closest('form').find('input').trigger('change');
+				$('.btn.new-item').bind('click', function() {
+        				$('.nav-tabs a[href="#tab_save"]').tab('show');
+				    	$(this).parents('div.nav-tabs-custom').find('form').trigger('reset');
+				    	$(this).parents('div.nav-tabs-custom').find('form').find('input').trigger('change');
 				    });
-				$('button.new-item').prop('disabled', true);
+				$('.btn.new-item').prop('disabled', true);
 				$('input[name="id"]').change(function() {
-					$('button.new-item').prop('disabled', ($(this).val() == ''));
+					$('.btn.new-item').prop('disabled', ($(this).val() == ''));
 				});
 
 				// Change enter to tab
@@ -811,25 +842,6 @@ var API_ROOT = '//' + host + '/api';
 
 	};
 
-	/**
-	 * Handle modal para mensagens.
-	 */
-	$.fn.progress = function(percent, message) {
-		// iniciar barra de progresso
-		if (percent < 100 && $(this).find('.progress-bar').width() == 100) {
-			$(this).find('.progress-bar').width('0%').html('0%');
-		}
-		// verificar se conclui o processo
-		if (percent == 100) {
-			$(this).find('.progress-bar').width(percent + '%').html([message, ' (', percent, ' %)'].join(''));
-			$(this).slideUp();
-		} else {
-			// Mostrar progress
-			$(this).slideDown();
-			$(this).find('.progress-bar').width(percent + '%').html([message, ' (', percent, ' %)'].join(''));
-		}
-	};
-
 	$.fn.$elect = function(selectOptions) {
 
 		// Init validation
@@ -901,5 +913,51 @@ var API_ROOT = '//' + host + '/api';
 			$('select').trigger('initSelect');
 		});
 	};
+
+	$.fn.dataTable = function(options) {
+
+        // Get select element
+        $ctrl = $(this);
+
+        $.api.loadToken();
+        $.view.progressBar().start();
+
+        // Construir tabela
+        $ctrl.bootstrapTable({
+            uniqueId : 'id',
+            columns : options.columns,
+            pageList : [15],
+            url : '/api' + options.service,
+            ajaxOptions: "requestOptions",
+            pagination : true,
+            sidePagination: 'server',
+            search : true,
+            onPreBody: function() {
+                $.view.progressBar().update(0.5);
+                $ctrl.find('tbody').hide();
+            },
+            onPostBody: function() {
+                $ctrl.find('tbody').fadeIn();
+                $.view.progressBar().done();
+            },
+            onLoadError: function(status, res) {
+                // build default message
+                if (status == 401) {
+                    $.oauth.refresh();
+                } else {
+
+                   // show error dialog
+                    $('.modal-dialog-message').modalDialog({
+                        title: title,
+                        message: $('<div>').text($.i18n.prop(options.errorMessage)).append($('<div class="messages-errormessage">').text(res))
+                    }).danger();
+
+                }
+
+                console.warn(res);
+            }
+        });
+
+	}
 
 }(jQuery);

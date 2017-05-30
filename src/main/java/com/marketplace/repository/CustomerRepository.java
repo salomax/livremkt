@@ -1,6 +1,6 @@
 package com.marketplace.repository;
 
-import com.marketplace.entity.Product;
+import com.marketplace.entity.Customer;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -11,11 +11,11 @@ import org.springframework.data.repository.query.Param;
  * @author salomao.marcos@gmail.com
  * @since 21/05/17
  */
-public interface ProductRepository extends PagingAndSortingRepository<Product, String>, SearchRepository<Product> {
+public interface CustomerRepository extends PagingAndSortingRepository<Customer, String>, SearchRepository<Customer> {
 
-    @Query("select p from Product p join p.userPermissions u " +
-            "where (p.code like %:search% or p.name like %:search%) " +
+    @Query("select c from Customer c join c.userPermissions u " +
+            "where (c.name like %:search% or c.email like %:search%) " +
             "  and u.user = :user")
-    Page<Product> search(@Param("search") String search, @Param("user") String user, Pageable pageable);
+    Page<Customer> search(@Param("search") String search, @Param("user") String user, Pageable pageable);
 
 }

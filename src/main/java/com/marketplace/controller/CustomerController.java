@@ -15,66 +15,66 @@
  */
 package com.marketplace.controller;
 
-import com.marketplace.entity.Product;
+import com.marketplace.entity.Customer;
 import com.marketplace.exception.EntityNotFoundException;
 import com.marketplace.repository.DefaultPage;
 import com.marketplace.repository.SearchPageRequest;
-import com.marketplace.service.ProductService;
+import com.marketplace.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.logging.Logger;
 
 import static java.lang.String.format;
-    
+
 /**
  * @author salomao.marcos@gmail.com
  * @since 21/05/17
  */
 @RestController
-public class ProductController {
+public class CustomerController {
 
-    private static final Logger log = Logger.getLogger(ProductController.class.getName());
+    private static final Logger log = Logger.getLogger(CustomerController.class.getName());
 
     @Autowired
-    private ProductService productService;
+    private CustomerService customerService;
 
-    @RequestMapping(value = "/api/product", method = RequestMethod.GET)
-    public DefaultPage<Product> list(@RequestParam(defaultValue = "") String search,
+    @RequestMapping(value = "/api/customer", method = RequestMethod.GET)
+    public DefaultPage<Customer> list(@RequestParam(defaultValue = "") String search,
                                      @RequestParam(defaultValue = "0") Integer offset,
                                      @RequestParam(defaultValue = SearchPageRequest.DEFAULT_LIMIT) Integer limit,
                                      @RequestParam(required = false) String sort,
                                      @RequestParam(defaultValue = "asc") String order)
             throws EntityNotFoundException {
-        log.fine("List products");
+        log.fine("List customers");
         SearchPageRequest pageRequest = new SearchPageRequest.Builder()
                 .offset(offset).limit(limit).sort(sort).order(order).build();
-        return this.productService.list(search, pageRequest);
+        return this.customerService.list(search, pageRequest);
     }
 
-    @RequestMapping(value = "/api/product/{id}", method = RequestMethod.GET)
-    public Product get(@PathVariable String id) throws EntityNotFoundException {
-        log.fine(format("Get product %s", id));
-        return this.productService.getById(id);
+    @RequestMapping(value = "/api/customer/{id}", method = RequestMethod.GET)
+    public Customer get(@PathVariable String id) throws EntityNotFoundException {
+        log.fine(format("Get customer %s", id));
+        return this.customerService.getById(id);
     }
 
-    @RequestMapping(value = "/api/product", method = RequestMethod.POST)
-    public Product save(@RequestBody Product product) throws EntityNotFoundException {
-        log.fine("Save product");
-        return this.productService.save(product);
+    @RequestMapping(value = "/api/customer", method = RequestMethod.POST)
+    public Customer save(@RequestBody Customer customer) throws EntityNotFoundException {
+        log.fine("Save customer");
+        return this.customerService.save(customer);
     }
 
-    @RequestMapping(value = "/api/product/{id}", method = RequestMethod.PUT)
-    public void save(@PathVariable String id, @RequestBody Product product) throws EntityNotFoundException {
-        log.fine("Update product");
-        product.setId(this.productService.getById(id).getId());
-        this.productService.save(product);
+    @RequestMapping(value = "/api/customer/{id}", method = RequestMethod.PUT)
+    public void save(@PathVariable String id, @RequestBody Customer customer) throws EntityNotFoundException {
+        log.fine("Update customer");
+        customer.setId(this.customerService.getById(id).getId());
+        this.customerService.save(customer);
     }
 
-    @RequestMapping(value = "/api/product/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/customer/{id}", method = RequestMethod.DELETE)
     public void delete(@PathVariable String id) throws EntityNotFoundException {
-        log.fine("Delete product");
-        this.productService.delete(this.productService.getById(id));
+        log.fine("Delete customer");
+        this.customerService.delete(this.customerService.getById(id));
     }
 
 }
